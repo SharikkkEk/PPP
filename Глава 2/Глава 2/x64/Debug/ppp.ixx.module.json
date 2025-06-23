@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Глава 2\\x64\\Debug\\PPP.ixx.obj",
+            "outputs": [
+                "C:\\Code\\Education\\Stroustroup\\Глава 2\\Глава 2\\x64\\Debug\\vc143.pdb",
+                "Глава 2\\x64\\Debug\\",
+                "C:\\Code\\Education\\Stroustroup\\Глава 2\\Глава 2\\x64\\Debug\\PPP.ixx.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "PPP",
+                    "source-path": "c:\\code\\education\\stroustroup\\глава 2\\ppp.ixx",
+                    "is-interface": true
+                }
+            ],
+            "requires": [
+                {
+                    "logical-name": "std"
+                }
+            ]
+        }
+    ]
+}

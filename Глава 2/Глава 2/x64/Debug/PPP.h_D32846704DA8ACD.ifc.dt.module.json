@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Глава 2\\x64\\Debug\\PPP.obj",
+            "outputs": [
+                "Глава 2\\x64\\Debug\\PPP.h_D32846704DA8ACD.ifc.dt.module.json",
+                "Глава 2\\x64\\Debug\\PPP.h_D32846704DA8ACD.ifc.dt.d.json",
+                "Глава 2\\x64\\Debug\\PPP.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Code\\Education\\Stroustroup\\Глава 2\\PPP.h",
+                    "source-path": "c:\\code\\education\\stroustroup\\глава 2\\ppp.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": [
+                {
+                    "logical-name": "PPP"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "general\\x64\\Debug\\Source.obj",
+            "outputs": [
+                "C:\\Users\\Sharik\\Documents\\Code\\Education\\Stroustroup\\general\\general\\x64\\Debug\\vc143.pdb",
+                "general\\x64\\Debug\\"
+            ],
+            "requires": []
+        }
+    ]
+}

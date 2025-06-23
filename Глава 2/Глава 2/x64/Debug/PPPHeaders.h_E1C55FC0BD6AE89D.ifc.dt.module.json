@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Глава 2\\x64\\Debug\\PPPHeaders.obj",
+            "outputs": [
+                "Глава 2\\x64\\Debug\\PPPHeaders.h_E1C55FC0BD6AE89D.ifc.dt.module.json",
+                "Глава 2\\x64\\Debug\\PPPHeaders.h_E1C55FC0BD6AE89D.ifc.dt.d.json",
+                "Глава 2\\x64\\Debug\\PPPHeaders.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Code\\Education\\Stroustroup\\Глава 2\\PPPHeaders.h",
+                    "source-path": "c:\\code\\education\\stroustroup\\глава 2\\pppheaders.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

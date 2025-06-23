@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Hello World\\x64\\Debug\\PPP_support.obj",
+            "outputs": [
+                "Hello World\\x64\\Debug\\PPP_support.h_E9CBCC9F7044044F.ifc.dt.module.json",
+                "Hello World\\x64\\Debug\\PPP_support.h_E9CBCC9F7044044F.ifc.dt.d.json",
+                "Hello World\\x64\\Debug\\PPP_support.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Code\\Education\\Stroustroup\\general\\PPP_support.h",
+                    "source-path": "c:\\code\\education\\stroustroup\\general\\ppp_support.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

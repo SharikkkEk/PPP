@@ -1,0 +1,6 @@
+﻿  Проверка источников на наличие зависимостей модуля…
+  Source.cpp
+  Компиляция…
+  Source.cpp
+  LINK : не найден или не выполнена сборка C:\Users\Sharik\Documents\Code\Education\Stroustroup\general\x64\Debug\general.exe при последней инкрементной компоновке; выполняется полная компоновка
+  general.vcxproj -> C:\Users\Sharik\Documents\Code\Education\Stroustroup\general\x64\Debug\general.exe

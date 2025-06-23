@@ -1,0 +1,9 @@
+﻿  Проверка источников на наличие зависимостей модуля…
+  std.compat.ixx
+  std.ixx
+  Source.cpp
+  Компиляция…
+  std.ixx
+  Source.cpp
+  std.compat.ixx
+C:\Code\Education\Stroustroup\Глава 2\GoodBye cruel world\Source.cpp(6,14): error C2001: newline в константе

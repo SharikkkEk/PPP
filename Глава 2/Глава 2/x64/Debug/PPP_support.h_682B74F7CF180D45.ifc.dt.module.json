@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Глава 2\\x64\\Debug\\PPP_support.obj",
+            "outputs": [
+                "Глава 2\\x64\\Debug\\PPP_support.h_682B74F7CF180D45.ifc.dt.module.json",
+                "Глава 2\\x64\\Debug\\PPP_support.h_682B74F7CF180D45.ifc.dt.d.json",
+                "Глава 2\\x64\\Debug\\PPP_support.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Code\\Education\\Stroustroup\\Глава 2\\PPP_support.h",
+                    "source-path": "c:\\code\\education\\stroustroup\\глава 2\\ppp_support.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

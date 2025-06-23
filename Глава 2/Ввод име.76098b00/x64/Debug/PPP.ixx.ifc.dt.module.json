@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Ввод име.76098b00\\x64\\Debug\\PPP.obj",
+            "outputs": [
+                "Ввод име.76098b00\\x64\\Debug\\PPP.ixx.ifc.dt.module.json",
+                "Ввод име.76098b00\\x64\\Debug\\PPP.ixx.ifc.dt.d.json",
+                "Ввод име.76098b00\\x64\\Debug\\PPP.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "PPP",
+                    "source-path": "c:\\code\\education\\stroustroup\\глава 2\\ppp.ixx",
+                    "is-interface": true
+                }
+            ],
+            "requires": [
+                {
+                    "logical-name": "std"
+                }
+            ]
+        }
+    ]
+}

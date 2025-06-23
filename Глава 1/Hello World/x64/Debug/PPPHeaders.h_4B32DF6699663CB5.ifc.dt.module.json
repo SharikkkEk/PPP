@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Hello World\\x64\\Debug\\PPPHeaders.obj",
+            "outputs": [
+                "Hello World\\x64\\Debug\\PPPHeaders.h_4B32DF6699663CB5.ifc.dt.module.json",
+                "Hello World\\x64\\Debug\\PPPHeaders.h_4B32DF6699663CB5.ifc.dt.d.json",
+                "Hello World\\x64\\Debug\\PPPHeaders.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Users\\Sharik\\Documents\\Code\\Education\\Stroustroup\\general\\PPPHeaders.h",
+                    "source-path": "c:\\users\\sharik\\documents\\code\\education\\stroustroup\\general\\pppheaders.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

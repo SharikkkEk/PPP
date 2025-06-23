@@ -1,0 +1,11 @@
+﻿  Проверка источников на наличие зависимостей модуля…
+  std.ixx
+  PPP.ixx
+  std.compat.ixx
+  Source.cpp
+  Компиляция…
+  std.ixx
+  std.compat.ixx
+  Source.cpp
+  PPP.ixx
+  Глава 2.vcxproj -> C:\Code\Education\Stroustroup\Глава 2\x64\Debug\Ввод имени и возраста.exe

@@ -1,0 +1,12 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\sharik\\documents\\code\\education\\stroustroup\\general\\source.cpp",
+        "ProvidedModule": "",
+        "Includes": [
+            "c:\\users\\sharik\\documents\\code\\education\\stroustroup\\general\\ppp.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
