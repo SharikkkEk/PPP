@@ -3,7 +3,9 @@
     "Data": {
         "Source": "c:\\code\\education\\stroustroup\\глава 2\\source.cpp",
         "ProvidedModule": "",
-        "Includes": [],
+        "Includes": [
+            "c:\\code\\education\\stroustroup\\глава 2\\ppp.h"
+        ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
     }

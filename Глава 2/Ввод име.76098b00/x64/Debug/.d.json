@@ -3,8 +3,14 @@
     "Data": {
         "Source": "c:\\code\\education\\stroustroup\\глава 2\\source.cpp",
         "ProvidedModule": "",
-        "Includes": [],
+        "Includes": [
+            "c:\\code\\education\\stroustroup\\глава 2\\ppp.h"
+        ],
         "ImportedModules": [
+            {
+                "Name": "PPP",
+                "BMI": "C:\\Code\\Education\\Stroustroup\\Глава 2\\Ввод име.76098b00\\x64\\Debug\\PPP.ixx.ifc"
+            },
             {
                 "Name": "std",
                 "BMI": "C:\\Code\\Education\\Stroustroup\\Глава 2\\Ввод име.76098b00\\x64\\Debug\\microsoft\\STL\\std.ixx.ifc"

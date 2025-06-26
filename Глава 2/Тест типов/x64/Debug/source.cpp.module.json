@@ -5,7 +5,7 @@
         {
             "primary-output": "x64\\Debug\\Source.obj",
             "outputs": [
-                "C:\\Code\\Education\\Stroustroup\\Тест типов\\x64\\Debug\\vc143.pdb",
+                "C:\\Code\\Education\\Stroustroup\\Глава 2\\Тест типов\\x64\\Debug\\vc143.pdb",
                 "x64\\Debug\\"
             ],
             "requires": [

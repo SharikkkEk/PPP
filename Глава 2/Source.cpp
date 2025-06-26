@@ -1,5 +1,4 @@
-import std;
-using namespace std;
+#include "PPP.h"
 
 int main() { 
 	cout << "Enter your age and name, please: ";

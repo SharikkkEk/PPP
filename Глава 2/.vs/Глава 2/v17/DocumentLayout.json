@@ -3,7 +3,12 @@
   "WorkspaceRootPath": "C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6D8F712D-042F-47FB-8575-3601F1148924}|..\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432.vcxproj|C:\\Code\\Education\\Stroustroup\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A4D716AB-431D-461E-A838-FAAAEED46A9B}|GoodBye cruel world\\GoodBye cruel world.vcxproj|C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\GoodBye cruel world\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A4D716AB-431D-461E-A838-FAAAEED46A9B}|GoodBye cruel world\\GoodBye cruel world.vcxproj|solutionrelative:GoodBye cruel world\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{76098B00-90C7-431D-9CC6-FAEB267241EA}|\u0413\u043B\u0430\u0432\u0430 2.vcxproj|C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{76098B00-90C7-431D-9CC6-FAEB267241EA}|\u0413\u043B\u0430\u0432\u0430 2.vcxproj|solutionrelative:Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,13 +32,26 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Source.cpp",
-              "DocumentMoniker": "C:\\Code\\Education\\Stroustroup\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\Source.cpp",
-              "RelativeDocumentMoniker": "..\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\Source.cpp",
-              "ToolTip": "C:\\Code\\Education\\Stroustroup\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\Source.cpp",
-              "RelativeToolTip": "..\\\u0422\u0435\u0441\u0442 \u0442\u0438\u043F\u043E\u0432\\Source.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAYAAAAgAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\GoodBye cruel world\\Source.cpp",
+              "RelativeDocumentMoniker": "GoodBye cruel world\\Source.cpp",
+              "ToolTip": "C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\GoodBye cruel world\\Source.cpp",
+              "RelativeToolTip": "GoodBye cruel world\\Source.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-06-22T18:06:25.447Z",
+              "WhenOpened": "2025-06-25T13:56:59.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Source.cpp",
+              "DocumentMoniker": "C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\Source.cpp",
+              "RelativeDocumentMoniker": "Source.cpp",
+              "ToolTip": "C:\\Code\\Education\\Stroustroup\\\u0413\u043B\u0430\u0432\u0430 2\\Source.cpp",
+              "RelativeToolTip": "Source.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-24T08:18:57.097Z",
               "EditorCaption": ""
             }
           ]

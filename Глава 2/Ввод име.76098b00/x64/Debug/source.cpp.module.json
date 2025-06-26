@@ -10,7 +10,7 @@
             ],
             "requires": [
                 {
-                    "logical-name": "std"
+                    "logical-name": "PPP"
                 }
             ]
         }
