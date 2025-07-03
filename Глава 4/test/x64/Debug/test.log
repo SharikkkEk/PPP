@@ -1,0 +1,6 @@
+﻿  Проверка источников на наличие зависимостей модуля…
+  Source.cpp
+  Компиляция…
+  Source.cpp
+C:\Code\Education\Stroustroup\Глава 4\test\Source.cpp(33,40): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  test.vcxproj -> C:\Code\Education\Stroustroup\Глава 4\x64\Debug\test.exe

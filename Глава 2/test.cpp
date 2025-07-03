@@ -2,9 +2,7 @@
 using namespace std;
 
 int main(){
-	const char a = '1';
-	switch (a){
-	case '1':
-		cout << "1";
+	for(;;){
+		cout << "\e[1;31m This is red text \e[0m";
 	}
 }
