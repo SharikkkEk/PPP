@@ -1,4 +1,3 @@
-//Начальный код
 #include <iostream>
 
 double ktoc(double k){

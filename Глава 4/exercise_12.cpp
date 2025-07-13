@@ -69,16 +69,7 @@ std::vector<int> fill_random(){
 }
 
 int main(){
-	std::vector<int> usr_numbers;
-	for (int i = 0; i < 4; ++i){
-		char n = '0';
-		std::cin >> n;
-		if (n >= '0' && n <= '9')
-			usr_numbers.push_back(n-conv_k);
-	}
-	if (usr_numbers.size() < 4){
-		throw std::runtime_error("you must enter four diffirent digits");
-	}
+	game();
 }
 
 void game() {
