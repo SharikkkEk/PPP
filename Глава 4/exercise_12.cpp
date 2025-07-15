@@ -1,10 +1,52 @@
-//Начальный код
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <numeric>
+#include <chrono>
 
-constexpr int conv_k = 48;
+// ===== Forward declaration =====
+
+void game();
+void fill_random(std::vector<int>& vector);
+void get_digits(std::vector<int>& vector);
+bool check_repeated(std::vector<int> v);
+int count_bulls_cows(std::vector<int> v_guess, std::vector<int> v_usr); 
+
+// ===== Game =====
+
+void game() {
+	std::vector<int> v_guess;
+	fill_random(v_guess);
+
+	int bulls = 0;
+
+	while (bulls < 4){
+		std::vector<int> v_usr;
+		get_digits(v_usr);
+
+		if (check_repeated(v_usr)) {
+			throw std::runtime_error("number must not having repeated digits");
+		}
+
+		bulls = count_bulls_cows(v_guess, v_usr);
+	}
+	std::cout << "You win!\n";
+}
+
+// ===== Main =====
+
+int main(){
+	char answer = 'y';
+	std::cout << "Welcome to the bulls and cows game!\n";
+	while (answer == 'y'){
+		game();
+		std::cout << "Write 'y' if you wanna continue ";
+		std::cin >> answer;
+	}
+}
+
+// ===== Auxiliary functions =====
 
 int count_bulls_cows(std::vector<int> v_guess, std::vector<int> v_usr) {
 	int cows = 0;
@@ -32,59 +74,26 @@ bool check_repeated(std::vector<int> v) {
 	return false;
 }
 
-std::vector<int> vectorization(int n) {
-	if (!(n >= 1000 && 10000 > n))
-		throw std::runtime_error("number must be 1000<=n<=9999");
-
-	std::vector<int> v(4);
-	for (int i = 0; i < 4; ++i) {
-		v[3 - i] = n % 10; // Разворачиваем число обратно
-		n /= 10;
-	}
-	return v;
-}
-
-void game();
-
-bool find(std::vector<int> v, int n){
-	for (int x: v){
-		if (x == n)
-			return true;
-	}
-	return false;
-}
-
-std::vector<int> fill_random(){
-	std::default_random_engine engine;
+void fill_random(std::vector<int>& vector){
+	std::default_random_engine engine(std::time(nullptr));
 	std::uniform_int_distribution<int> dist(0, 9);
-	std::vector<int> v;
 	
-	while (v.size() < 4){
-		int r_n = dist(engine);
-		if (!find(v, r_n))
-			v.push_back(r_n);
+	while (vector.size() < 4){
+		int random_number = dist(engine);
+		if (std::find(begin(vector), end(vector), random_number) == end(vector))
+			vector.push_back(random_number);
 	}
-	
-	return v;
 }
 
-int main(){
-	game();
-}
-
-void game() {
-	std::vector<int> v_guess = fill_random();
-	int bulls = 0;
-	while (bulls < 4){
-		int usr_number = 0;
-		std::cin >> usr_number;
-		std::vector<int> v_usr_number = vectorization(usr_number);
-
-		if (check_repeated(v_usr_number)) {
-			throw std::runtime_error("number must not having repeated digits");
-		}
-
-		bulls = count_bulls_cows(v_guess, v_usr_number);
+void get_digits(std::vector<int>& vector){
+	char c;
+	for (int i = 0; i < 4; ++i){
+		std::cin >> c;
+		if (!std::cin)
+			throw std::runtime_error("input error");
+		if (c >= '0' && c <= '9')
+			vector.push_back(c - '0');
+		else
+			throw std::runtime_error("you must enter only digits");
 	}
-	std::cout << "You win!\n";
 }
