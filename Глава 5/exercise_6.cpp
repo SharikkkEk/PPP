@@ -6,7 +6,6 @@
 #include <chrono>
 #include <unordered_map>
 
-
 // ===== Forward declaration =====
 
 void game();
@@ -34,14 +33,22 @@ void game() {
 
 // ===== Main =====
 
-int main(){
+int main()
+try {
 	char answer = 'y';
 	std::cout << "Welcome to the bulls and cows game!\n";
+
 	while (answer == 'y'){
 		game();
 		std::cout << "Write 'y' if you wanna continue ";
 		std::cin >> answer;
 	}
+
+	return 0;
+}
+catch(exception& e){
+	std::cout << e.what();
+	return 1;
 }
 
 // ===== Auxiliary functions =====
@@ -51,7 +58,7 @@ int count_bulls_cows(std::unordered_map<char, unsigned short>& letters_guess, st
 	int bulls = 0;
 	
 	for (auto it = letters_usr.begin(); it != letters_usr.end(); ++it){ 
-		auto founded_letter = letters_guess.find(it->first);
+		auto founded_letter = letters_guess.find(it->first); 
 		if (founded_letter != letters_guess.end()){ 
 			if (letters_usr[it->first] == letters_guess[it->first]) // Получаем позицию элемента в обоих словарях
 				++bulls;
@@ -67,6 +74,7 @@ int count_bulls_cows(std::unordered_map<char, unsigned short>& letters_guess, st
 void fill_random(std::unordered_map<char, unsigned short>& letters) {
 	std::default_random_engine engine(std::time(nullptr));
 	std::uniform_int_distribution<int> dist(65, 90);
+
  	for (int i = 0; i < 4; ++i){
 		while (letters.size() < i){
 			int random_letter = dist(engine);
@@ -86,6 +94,7 @@ void get_letters(std::unordered_map<char, unsigned short>& letters){
 		else
 			throw std::runtime_error("you must enter only letters");
 	}
+
 	if (letters.size() < 4)
 		throw std::runtime_error("you must enter 4 different letters");
 }

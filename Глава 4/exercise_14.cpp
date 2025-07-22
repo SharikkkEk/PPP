@@ -1,58 +1,56 @@
-//Стартовый код
 #include <iostream>
 #include <vector>
-
-int get_index(std::vector<std::vector<std::string>>* week_days, std::string s){
-	for (int i = 0; i < week_days->size();++i){
-		auto week_ptr = week_days->begin()+i;
-		for (auto j = week_ptr->begin(); j<week_ptr->end();++j){
-			if (*j == s)
-				return i;
-		}
-	}
-	return -1;
-}
-
-void fill_week(std::vector<std::vector<std::string>>* week){
-	week->push_back({"Monday", "monday", "mon", "Mon"});
-	week->push_back({"Tuesday", "tuesday"});
-	week->push_back({"Wednesday", "wednesday"});
-	week->push_back({"Thursday", "thursday"});
-	week->push_back({"Friday", "friday"});
-	week->push_back({"Saturday", "saturday"});
-	week->push_back({"Sunday", "sunday"});
-}
+#include <unordered_map>
+#include <algorithm>
+#include <cctype>
 
 int main(){
-	std::vector<std::vector<int>> week_values;
-	for (int i = 0; i < 7; ++i) 
-		week_values.push_back({});
-	std::vector<std::vector<std::string>> week_days;
-	fill_week(&week_days);
+	int rejected = 0;
 	int count = 0;
+	std::cin >> count;
 
-	std::string week;
-	int number = 0;
+	std::vector<std::vector<int>> week_values(7);
+	std::unordered_map<std::string, std::vector<int>*> week_days = {
+		{"monday", &week_values[0]},
+		{"mon", &week_values[0]},
+		{"tuesday", &week_values[1]},
+		{"tue", &week_values[1]},
+		{"wednesday", &week_values[2]},
+		{"wed", &week_values[2]},
+		{"thursday", &week_values[3]},
+		{"thur", &week_values[3]},
+		{"friday", &week_values[4]},
+		{"fri", &week_values[4]},
+		{"saturday", &week_values[5]},
+		{"satur", &week_values[5]},
+		{"sunday", &week_values[6]},
+		{"sun", &week_values[6]}
+	};
 
-	while(std::cin >> week && std::cin >> number){
-		int index = get_index(&week_days, week);
-		if (index > -1){
-			week_values[index].push_back(number);
-		}
-		else{
-			++count;
-		}
+	for(int i = 0; i < count; ++i){
+		std::string day;
+		int value = 0;
+		std::cin >> day >> value;
+		std::transform(day.begin(), day.end(), day.begin(), [](char c){return std::tolower(c);});
+		if (week_days.find(day) != week_days.end())
+			week_days[day]->push_back(value);
+		else
+			++rejected;
 	}
 
-	for (int i = 0; i < 7; ++i){
-		std::cout << week_days[i][0] << " ";
+	const char* days_of_week[] = {
+		"monday", "tuesday", "wednesday", "thursday",
+		"friday", "saturday", "sunday"
+	};
+
+	for (std::string day : days_of_week){
+		std::cout << day << ":";
 		int sum = 0;
-		for (int j : week_values[i]){
-			std::cout << j << " ";
-			sum += j;
+		for (int value : *week_days[day]) {
+			std::cout << " " << value;
 		}
-		std::cout << "sum " << sum << "\n";
+		std::cout << " Sum: " << sum << '\n';
 	}
-
-	std::cout << "Rejected count " << count;
+	std::cout << "Rejected count: " << rejected;
 }
+
