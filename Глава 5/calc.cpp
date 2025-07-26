@@ -172,6 +172,7 @@ void Token_stream::ignore(char c){
 	В одной строчкe могут встретиться выражения с ошибкой и без.
 	Для того, чтобы второе было расчитано, нам нужно пропустить первое. 
 	Все выражения заканчиваются на ';'. Следовательно, если мы встретили ошибку - просто пропускаем ввод до первой ';'.
+	Функция может пропустить ввод до любого символа
 	*/
 	if (full && c==buffer.kind){
 		full = false;
@@ -408,24 +409,6 @@ int factorial(double val){
 	return res;
 }
 
-
-int safe_int_cast(double d){
-	int i = static_cast<int>(d);
-	if (static_cast<int>(d) != d)
-		throw std::runtime_error("narrowing conversion");
-	return i;
-}
-
-double pow(double value, double d_power){ // Принимаем степень в double, чтобы проверить, целое ли это число
-	int power = safe_int_cast(d_power);
-	double res = 1;
-	for (int i = 0; i < power; ++i)
-		res *= value;
-	for (int i = 0; i > power; --i)
-		res /= value;
-	return res;
-}
-
 /* ===== Formal verification =====
 
 Пусть n = floor(val), где n неотрицательное целое число и floor(val) - целая часть val
@@ -445,6 +428,23 @@ double pow(double value, double d_power){ // Принимаем степень �
 3. Заключение
    Итак, импликация P(k) => P(k+1) верна для всех k>=0. Следовательно, согласно принципу математической индукции, P(n) верен для всех неотрицательных целых n
 */
+
+int safe_int_cast(double d){
+	int i = static_cast<int>(d);
+	if (static_cast<int>(d) != d)
+		throw std::runtime_error("narrowing conversion");
+	return i;
+}
+
+double pow(double value, double d_power){ // Принимаем степень в double, чтобы проверить, целое ли это число
+	int power = safe_int_cast(d_power);
+	double res = 1;
+	for (int i = 0; i < power; ++i)
+		res *= value;
+	for (int i = 0; i > power; --i)
+		res /= value;
+	return res;
+}
 
 // ===== Auxiliary variable functions =====
 
