@@ -1,7 +1,12 @@
-// Калькулятор на основе рекурсивного спуска
+// Калькулятор на основе рекурсивного спуска с переменными
+
 #include <iostream>
 #include <cmath>
 #include <map>
+
+// ===== Input stream =====
+
+std::istream& input = std::cin;
 
 // ===== Constant Inizialization =====
 
@@ -12,12 +17,29 @@ constexpr char result = '=';
 
 constexpr char number = '8'; // 8 - произвольный символ для обозначения типа number у токена
 constexpr char name = 'a';
-constexpr char let = 'L';
-const std::string declkey = "let";
+constexpr char decl_key = '#';
+constexpr char const_key = 'c';
+constexpr char help_key = 'h';
 
-constexpr char pow_ch = '^';
-constexpr char sqrt_ch = '<';
+constexpr char pow_key = '^';
+constexpr char sqrt_key = '<';
 
+const char help[] = R"(Calculator features:
+support for user defined variables and constants
+	- for defining variable use "#" key
+	example:
+	# rad = 0.529
+	- for defining constants use "const" key
+	example: const tau = 6.283
+functions
+	- sqrt({value})
+	- pow({value}, {power})
+	accepts only positive and integer powers
+Control:
+	";" - marks the end of expression
+	example: 2+2; 3+3
+	"quit" - quit the calculator
+)";
 // ===== Grammar =====
 
 /*
@@ -25,6 +47,7 @@ calculation:
 	statement
 	print
 	quit
+	calculation ';' calculation
 statement:
 	expression
 	declaration
@@ -34,7 +57,7 @@ print:
 quit:
 	'q'
 declaration:
-	"let" name '=' expression
+	'#' name '=' expression
 assignment:
 	name '=' expression
 expression:
@@ -42,10 +65,13 @@ expression:
 	expression '+' term
 	expression '-' term
 term:
+	subterm
+	term '*' subterm
+	term '/' subterm
+	term '%' subterm
+subterm:
 	primary
-	term '*' primary
-	term '/' primary
-	term % primary
+	subterm '!'
 primary:
 	number
 	'(' expression ')'
@@ -64,20 +90,22 @@ number:
 class Token;
 class Token_stream;
 
-double declaration();
+void calculate();
+double declaration(bool is_const);
 double assignment();
 double expression();
 double term();
+double subterm();
 double primary();
 
-void calculate();
 int factorial(double value);
-void clean_up_mess();
 int safe_int_cast(double d); // Преобразование с проверкой на сужение
 double pow(double value, double d_power); // Возведение в степень
 
-bool is_declared(std::string var);
-double define_name(std::string var, double val);
+char input_wo_ws(); // Получить символ из потока ввода, пропуская пробелы
+void clean_up_mess();
+
+class Symbol_table;
 
 // ===== Token system =====
 
@@ -121,38 +149,50 @@ Token Token_stream::get(){
 		return buffer;
 	}
 
-	char ch;
-	std::cin >> ch;
+	char ch = input_wo_ws();
 
 	switch (ch){
-	case quit: case print:
-	case '!': case '%': case '+': case '-': case '*': case '/': case ',':
-	case '(': case ')': case '{': case '}': case '=':
+	case '\n':
+		return Token(print);
+	case print: case decl_key: 
+	case '!': case '%': case '+': case '-': case '*': case '/':
+	case '(': case ')': case '{': case '}': case '=': case ',':
 		return Token(ch);	
 	case '.':
 	case '0': case '1': case '2': case '3': case '4':
 	case '5': case '6': case '7': case '8': case '9':
-	{	std::cin.putback(ch); // Кладём цифру обратно
+	{	input.unget(); // Кладём цифру обратно
 		double val;
-		std::cin >> val; // Считываем число полностью
+		input >> val; // Считываем число полностью
+		
+		input.get(ch);
+		while (ch == 'k'){
+			val *= 1000;
+			input.get(ch);
+		}
+		input.unget();
+
 		return Token(number, val);
 	}
 	default:
-		if (std::isalpha(ch)){ // Имя может начинаться только с буквы
+		if (std::isalpha(ch) || ch == '_'){ 
 			std::string s;
 			s += ch;
 
-			while(std::cin.get(ch) && (std::isalpha(ch) || std::isdigit(ch)))  // В имени переменной могут быть только цифры и буквы
+			while(input.get(ch) && (std::isalpha(ch) || std::isdigit(ch) || ch == '_'))  // В имени переменной могут быть только цифры и буквы
 				s += ch;
 
-			std::cin.putback(ch); 
-			// Последний прочитанный символ не цифра и не буква - кладём в поток обратно, чтобы другие функции смогли его прочитать
-			if (s == declkey) 
-				return Token{let};
+			input.unget(); // Последний прочитанный символ не цифра и не буква - кладём в поток обратно, чтобы другие функции смогли его прочитать
 			if (s == "sqrt")
-				return Token(sqrt_ch);
+				return Token(sqrt_key);
 			if (s == "pow")
-				return Token(pow_ch);
+				return Token(pow_key);
+			if (s == "const")
+				return Token(const_key);
+			if (s == "quit")
+				return Token(quit);
+			if (s == "help")
+				return Token(help_key);
 			return Token{name, s};
 		}
 
@@ -170,9 +210,9 @@ void Token_stream::putback(Token t){
 void Token_stream::ignore(char c){
 	/*
 	В одной строчкe могут встретиться выражения с ошибкой и без.
-	Для того, чтобы второе было расчитано, нам нужно пропустить первое. 
+	Для того, чтобы выражение без ошибки было расчитано, нам нужно пропустить ошибочное.
 	Все выражения заканчиваются на ';'. Следовательно, если мы встретили ошибку - просто пропускаем ввод до первой ';'.
-	Функция может пропустить ввод до любого символа
+	Функция может пропустить ввод не только до ';', но и до любого символа
 	*/
 	if (full && c==buffer.kind){
 		full = false;
@@ -181,39 +221,81 @@ void Token_stream::ignore(char c){
 	full = false; // Очищаем буфер, потому что после ошибки он может содержать устаревший токен
 
 	char ch = 0;
-	while (std::cin >> ch){
-		if (ch == c)
+	while (input.get(ch)){
+		if (ch == c || ch == '\n')  
 			return;
 	}
 }
 
 Token_stream::Token_stream(): full{false}, buffer{0} {}
 
-// ===== Token stream initialization =====
-
 Token_stream ts;
 
 // ===== Variable system =====
 
-std::map<std::string, double> var_table;
+class Symbol_table{
+private:
+	std::map<std::string, double> var_table;
+	std::map<std::string, double> const_table;
+public:
+	double set_value(std::string s, double d);
+	double get_value(std::string s);
+	double define_var(std::string var, double val);
+	double define_const(std::string s, double val);
+	bool is_declared(std::string var);
+};
 
-double set_value(std::string s, double d){
+Symbol_table names;
+
+// ===== Variable system functions definition =====
+
+double Symbol_table::set_value(std::string s, double d){
 	auto it = var_table.find(s);
 
-	if (it != var_table.end()) // find() возвращает end(), если элемент не был найден
+	if (it != var_table.end()){
 		it->second = d;
 		return d;
+	}
 
 	throw std::runtime_error("trying to write undefined variable " + s);
 }
 
-double get_value(std::string s){
+double Symbol_table::get_value(std::string s){
 	auto it = var_table.find(s);
 
 	if (it != var_table.end())
 		return it->second;
 
-	throw std::runtime_error("trying to read undefined variable " + s);
+	it = const_table.find(s);
+	if (it != const_table.end())
+		return it->second;
+
+	throw std::runtime_error("trying to read undefined name " + s);
+}
+	
+double Symbol_table::define_var(std::string var, double val){ // Может быть, стоит объединить с define_const
+	if (is_declared(var))
+		throw std::runtime_error(var + " declared twice");
+	var_table[var] = val;
+	return val;
+}
+	
+double Symbol_table::define_const(std::string s, double val){
+	if (is_declared(s))
+		throw std::runtime_error(s + " declared twice");
+	const_table[s] = val;
+	return val;
+}
+	
+bool Symbol_table::is_declared(std::string var){
+	auto it = var_table.find(var);
+	if (it != var_table.end())
+		return true;
+	it = const_table.find(var);
+	if (it != const_table.end())
+		return true;
+
+	return false;
 }
 
 // ===== Grammar rules =====
@@ -230,15 +312,8 @@ double primary(){
 		return d;
 	}
 	case number:
-		char ch;
-		std::cin >> ch;
-		
-		if (ch == '!')
-			return factorial(t.value);
-
-		std::cin.putback(ch);
 		return t.value;
-	case sqrt_ch:
+	case sqrt_key:
 	{ 	t = ts.get();
 		if (t.kind != '(')
 			throw std::runtime_error("'(' expected");
@@ -253,7 +328,7 @@ double primary(){
 
 		return sqrt(d);
 	}
-	case pow_ch:
+	case pow_key:
 	{	t = ts.get();
 		if (t.kind != '(')
 			throw std::runtime_error("'(' expected");
@@ -276,25 +351,38 @@ double primary(){
 		return - primary();
 	case '+':
 		return primary();
-	case 'a':
-		return get_value(t.name);
+	case name:
+		return names.get_value(t.name);
 	default:
+		ts.putback(t);
 		throw std::runtime_error("primary expected");
 	}
 }
 
-double term(){
+double subterm(){
 	double left = primary();
+	Token t = ts.get();
+	while (t.kind == '!'){
+		left = factorial(left);
+		t = ts.get();
+	}
+
+	ts.putback(t);
+	return left;
+}
+
+double term(){
+	double left = subterm();
 	
 	while (true){
 		Token t = ts.get();
 		switch(t.kind){
 		case '*':
-			left *= primary();
+			left *= subterm();
 			break;
 		case '/':
 		{
-			double d = primary();
+			double d = subterm();
 			if (d == 0) 
 				throw std::runtime_error("Divide by zero");
 			left /= d;
@@ -302,7 +390,7 @@ double term(){
 		}
 		case '%':
 		{
-			double d = primary();
+			double d = subterm();
 			if (d == 0)
 				throw std::runtime_error("Modulo by zero");
 			left = std::fmod(left, d); // Остаток от деления для нецелых чисел; x%y=x-y*int(x/y)
@@ -334,17 +422,20 @@ double expression(){
 	}
 }
 
-double declaration(){
+double declaration(bool is_const){
 	Token t = ts.get();
 	if (t.kind != name)
 		throw std::runtime_error("name expected in declaration");
 	
 	Token t2 = ts.get();
 	if (t2.kind != '=')
-		throw std::runtime_error("= missing in declaration of " + t.name);
+		throw std::runtime_error("'=' missing in declaration of " + t.name + " or forbidden character has been entered");
 	
 	double d = expression();
-	define_name(t.name, d);
+	if (is_const)
+		names.define_const(t.name, d);
+	else 
+		names.define_var(t.name, d);
 	return d;
 }
 
@@ -352,19 +443,21 @@ double statement(){
 	Token t = ts.get();
 
 	switch (t.kind){
-	case let:
-		return declaration();
-	case name:
-		char ch;
-		std::cin >> ch;
+	case decl_key:
+		return declaration(false);
+	case const_key:
+		return declaration(true);
+	case name: 
+	// Если в вводе встречено имя, то это либо вычисление какого-то выражения, либо присвоение значения переменной
+	{	char ch = input_wo_ws();
 
-		if (ch != '='){
-			ts.putback(t);
-			std::cin.putback(ch); // Кладём токен в поток, чтобы последующий вызов expression смог его получить
-			return expression();
-		}
+		if (ch == '=')
+			return names.set_value(t.name, expression());
 
-		return set_value(t.name, expression());
+		ts.putback(t);
+		input.unget(); 
+		return expression();
+	}
 	default:
 		ts.putback(t); 
 		return expression();
@@ -374,17 +467,20 @@ double statement(){
 // ===== Auxiliary ======
 
 void calculate(){
-	while (std::cin)
+	while (input)
 	try{
 		std::cout << prompt;
 		Token t = ts.get();
 
-		if (t.kind == print)
+		while (t.kind == print || t.kind == help_key){
+			if (t.kind == help_key)
+				std::cout << help;
 			t = ts.get();
+		}
 		if (t.kind == quit)
 			break;   
 
-		ts.putback(t);
+		ts.putback(t); // Кладём токен в поток, чтобы последующий вызов функции смог его получить
 		std::cout << result << statement() << '\n'; 
 	}
 	catch (std::exception& e){
@@ -393,8 +489,25 @@ void calculate(){
 	}
 }
 
+int safe_int_cast(double d){
+	int i = static_cast<int>(d);
+	if (static_cast<int>(d) != d)
+		throw std::runtime_error("narrowing conversion from double to int");
+	return i;
+}
+
 void clean_up_mess(){
 	ts.ignore(print);
+}
+
+char input_wo_ws(){
+	char ch;
+
+	do { // Пропускаем пробелы
+		input.get(ch);
+	} while (ch == ' '); 
+
+	return ch;
 }
 
 int factorial(double val){
@@ -429,13 +542,6 @@ int factorial(double val){
    Итак, импликация P(k) => P(k+1) верна для всех k>=0. Следовательно, согласно принципу математической индукции, P(n) верен для всех неотрицательных целых n
 */
 
-int safe_int_cast(double d){
-	int i = static_cast<int>(d);
-	if (static_cast<int>(d) != d)
-		throw std::runtime_error("narrowing conversion");
-	return i;
-}
-
 double pow(double value, double d_power){ // Принимаем степень в double, чтобы проверить, целое ли это число
 	int power = safe_int_cast(d_power);
 	double res = 1;
@@ -446,30 +552,13 @@ double pow(double value, double d_power){ // Принимаем степень �
 	return res;
 }
 
-// ===== Auxiliary variable functions =====
-
-double define_name(std::string var, double val){
-	if (is_declared(var))
-		throw std::runtime_error(var + " declared twice");
-	var_table[var] = val;
-	return val;
-}
-
-bool is_declared(std::string var){
-	auto it = var_table.find(var);
-
-	if (it == var_table.end())
-		return false;
-	return true;
-}
-
 // ===== Main =====
 
 int main()
 try{
-	define_name("k", 1000);
-	define_name("pi", M_PI);
-	define_name("e", std::exp(1)); // std::exp(1) возвращает значение самой экспоненты
+	names.define_const("k", 1000);
+	names.define_const("pi", M_PI); // M_PI = 3.14.....
+	names.define_const("e", std::exp(1)); // std::exp(1) возвращает значение самой экспоненты
 
 	calculate();
 	return 0;
