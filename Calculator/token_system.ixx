@@ -18,9 +18,10 @@ public:
 export class Token_stream{
 public:
 	Token get();
-	void putback(Token t);
-	void ignore(char c);
-	Token_stream();
+	void putback(Token);
+	void ignore(char);
+	Token_stream(istream&);
+	istream& input;
 private:
 	bool full = false;
 	Token buffer;
@@ -30,5 +31,3 @@ private:
 	Если его тип не подойдёт функции, то она положит токен обратно. В буфере после этого будет только один токен
 	*/
 };
-
-export Token_stream ts;

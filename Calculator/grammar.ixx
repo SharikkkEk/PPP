@@ -1,5 +1,11 @@
 export module grammar;
 
+import token_system;
+import symbol_table;
+import std;
+
+using namespace std;
+
 // ===== Grammar =====
 
 /*
@@ -46,12 +52,12 @@ number:
 */
 
 export namespace grammar{
-	double statement();
-	double declaration(bool);
-	double expression();
-	double term();
-	double subterm();
-	double primary();
+	double statement(Token_stream&, istream&, Symbol_table&);
+	double declaration(bool, Token_stream&, istream&, Symbol_table&);
+	double expression(Token_stream&, istream&, Symbol_table&);
+	double term(Token_stream&, istream&, Symbol_table&);
+	double subterm(Token_stream&, istream&, Symbol_table&);
+	double primary(Token_stream&, istream&, Symbol_table&);
 	
 	int safe_int_cast(double);
 	double pow(double, double);

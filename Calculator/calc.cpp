@@ -11,10 +11,6 @@ import token_system;
 using namespace cnst;
 using namespace utils;
 
-// ===== Input initialization =====
-
-std::istream& utils::input = std::cin;
-
 // ===== Constants =====
 
 const char help[] = R"(Calculator features:
@@ -36,7 +32,7 @@ Control:
 
 // ===== Auxiliary =====
 
-void calculate(){
+void calculate(Token_stream& ts, std::istream& input, Symbol_table& names){
 	while (input)
 	try{
 		std::cout << prompt_key;
@@ -51,7 +47,7 @@ void calculate(){
 			break;   
 
 		ts.putback(t); // Кладём токен в поток, чтобы последующий вызов функции смог его получить
-		std::cout << result_key << grammar::statement() << '\n'; 
+		std::cout << result_key << grammar::statement(ts, input, names) << '\n'; 
 	}
 	catch (std::exception& e){
 		std::cerr << e.what() << '\n';
@@ -63,13 +59,16 @@ void calculate(){
 
 int main()
 try{
-	names.define_const("k", 1000); // Для записи типа 1k, 2kk
+	std::istream& input = std::cin;
+	Token_stream ts(input);
+	Symbol_table names;
 
+	names.define_const("k", 1000); // Для записи типа 1k, 2kk
 	// define_var потому что пользователь, возможно, захочет изменить значение на более, либо менее точное
 	names.define_var("pi", 3.1415926535); 
 	names.define_var("e", std::exp(1)); // std::exp(1) возвращает значение самой экспоненты
 
-	calculate();
+	calculate(ts, input, names);
 	return 0;
 }
 catch(std::exception& e){

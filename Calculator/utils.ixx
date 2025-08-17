@@ -3,9 +3,7 @@ export module utils;
 import std;
 
 export namespace utils{
-	extern std::istream& input;
-
-	char input_wo_ws(){
+	char input_wo_ws(std::istream& input){
 		char ch;
 	
 		do { // Пропускаем пробелы

@@ -12,12 +12,12 @@ using namespace std;
 using namespace cnst;
 using namespace grammar;
 
-double grammar::primary(){
+double grammar::primary(Token_stream& ts, istream& input, Symbol_table& names){
 	Token t = ts.get();
 
 	switch (t.kind){
 	case '(': case '{':
-	{	double d = expression(); // Внутри скобок должно быть выражение
+	{	double d = expression(ts, input, names); // Внутри скобок должно быть выражение
 		t = ts.get();
 		if (t.kind != ')' && t.kind != '}')
 			throw runtime_error("')' or '}' expected");
@@ -30,7 +30,7 @@ double grammar::primary(){
 		if (t.kind != '(')
 			throw runtime_error("'(' expected");
 
-		double d = expression();
+		double d = expression(ts, input, names);
 		if (d < 0)
 			throw runtime_error("square root of negative number is not defined");
 
@@ -45,13 +45,13 @@ double grammar::primary(){
 		if (t.kind != '(')
 			throw runtime_error("'(' expected");
 
-		double d = expression();
+		double d = expression(ts, input, names);
 
 		t = ts.get();
 		if (t.kind != ',')
 			throw runtime_error("',' expected");
 
-		double power = expression();
+		double power = expression(ts, input, names);
 
 		t = ts.get();
 		if (t.kind != ')')
@@ -60,9 +60,9 @@ double grammar::primary(){
 		return pow(d, power);
 	}
 	case '-':
-		return - primary();
+		return - primary(ts, input, names);
 	case '+':
-		return primary();
+		return primary(ts, input, names);
 	case name_key:
 		return names.get_value(t.name);
 	default:
@@ -71,8 +71,8 @@ double grammar::primary(){
 	}
 }
 
-double grammar::subterm(){
-	double left = primary();
+double grammar::subterm(Token_stream& ts, istream& input, Symbol_table& names){
+	double left = primary(ts, input, names);
 	Token t = ts.get();
 
 	switch (t.kind){
@@ -84,18 +84,18 @@ double grammar::subterm(){
 	}
 }
 
-double grammar::term(){
-	double left = subterm();
+double grammar::term(Token_stream& ts, istream& input, Symbol_table& names){
+	double left = subterm(ts, input, names);
 	
 	while (true){
 		Token t = ts.get();
 		switch(t.kind){
 		case '*':
-			left *= subterm();
+			left *= subterm(ts, input, names);
 			break;
 		case '/':
 		{
-			double d = subterm();
+			double d = subterm(ts, input, names);
 			if (d == 0) 
 				throw runtime_error("Divide by zero");
 			left /= d;
@@ -103,7 +103,7 @@ double grammar::term(){
 		}
 		case '%':
 		{
-			double d = subterm();
+			double d = subterm(ts, input, names);
 			if (d == 0)
 				throw runtime_error("Modulo by zero");
 			left = fmod(left, d); // Остаток от деления для нецелых чисел; x%y=x-y*int(x/y)
@@ -116,17 +116,17 @@ double grammar::term(){
 	}
 }
 
-double grammar::expression(){
-	double left = term();
+double grammar::expression(Token_stream& ts, istream& input, Symbol_table& names){
+	double left = term(ts, input, names);
 
 	while (true){
 		Token t = ts.get();
 		switch(t.kind){
 		case '+':
-			left += term(); 
+			left += term(ts, input, names); 
 			break;
 		case '-':
-			left -= term();
+			left -= term(ts, input, names);
 			break;
 		default:
 			ts.putback(t);
@@ -135,7 +135,7 @@ double grammar::expression(){
 	}
 }
 
-double grammar::declaration(bool is_const){
+double grammar::declaration(bool is_const, Token_stream& ts, istream& input, Symbol_table& names){
 	Token t = ts.get();
 	if (t.kind != name_key)
 		throw runtime_error("name expected in declaration");
@@ -144,7 +144,7 @@ double grammar::declaration(bool is_const){
 	if (t2.kind != '=')
 		throw runtime_error("'=' missing in declaration of " + t.name + " or forbidden character has been entered");
 	
-	double d = expression();
+	double d = expression(ts, input, names);
 	if (is_const)
 		names.define_const(t.name, d);
 	else 
@@ -152,28 +152,28 @@ double grammar::declaration(bool is_const){
 	return d;
 }
 
-double grammar::statement(){
+double grammar::statement(Token_stream& ts, istream& input, Symbol_table& names){
 	Token t = ts.get();
 
 	switch (t.kind){
 	case decl_key:
-		return declaration(false);
+		return declaration(false, ts, input, names);
 	case const_key:
-		return declaration(true);
+		return declaration(true, ts, input, names);
 	case name_key: 
 	// Если в вводе встречено имя, то это либо вычисление какого-то выражения, либо присвоение значения переменной
-	{	char ch = input_wo_ws();
+	{	char ch = input_wo_ws(input);
 
 		if (ch == '=')
-			return names.set_value(t.name, expression());
+			return names.set_value(t.name, expression(ts, input, names));
 
 		ts.putback(t);
 		input.unget(); 
-		return expression();
+		return expression(ts, input, names);
 	}
 	default:
 		ts.putback(t); 
-		return expression();
+		return expression(ts, input, names);
 	}
 }
 
@@ -181,7 +181,7 @@ double grammar::statement(){
 
 int grammar::safe_int_cast(double d){
 	int i = static_cast<int>(d);
-	if (static_cast<int>(d) != d)
+	if (i != d)
 		throw std::runtime_error("narrowing conversion from double to int");
 	return i;
 }

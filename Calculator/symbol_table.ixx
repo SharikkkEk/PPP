@@ -14,5 +14,3 @@ public:
 	double define_const(string s, double val);
 	bool is_declared(string var);
 };
-
-export Symbol_table names;

@@ -16,7 +16,7 @@ Token::Token(char ch, string n) :kind{ch}, name{n} {}
 
 // ===== Token_stream constructor =====
 
-Token_stream::Token_stream(): full{false}, buffer{0} {}
+Token_stream::Token_stream(istream& in): full{false}, buffer{0}, input{in} {}
 
 // ===== Token_stream methods =====
 
@@ -26,7 +26,7 @@ Token Token_stream::get(){
 		return buffer;
 	}
 
-	char ch = input_wo_ws();
+	char ch = input_wo_ws(input);
 
 	switch (ch){
 	case '\n':
