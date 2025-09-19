@@ -37,13 +37,12 @@ term:
 	term '%' subterm
 subterm:
 	primary
-	subterm '!'
+	primary '!'
 primary:
 	number
 	'(' expression ')'
 	'-' primary
 	'+' primary
-	primary '!'
 	pow '(' expression ',' int ')'
 	sqrt '(' expression ')'
 number:
