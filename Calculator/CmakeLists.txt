@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 4.0.2)
+
+project(Calculator)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_executable(calculator token_system_impl.cpp symbol_table_impl.cpp grammar_impl.cpp calc.cpp utils.ixx token_system.ixx symbol_table.ixx grammar.ixx constants.ixx)

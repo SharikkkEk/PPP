@@ -2,6 +2,8 @@
 *.ifc
 *.obj
 *.swp
+*.o
+*.out
 Глава 1/
 calc_WIP.cpp
 test.cpp

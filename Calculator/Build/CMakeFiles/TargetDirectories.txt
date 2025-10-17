@@ -1,0 +1,3 @@
+C:/Code/Education/Stroustroup/Calculator/Build/CMakeFiles/calculator.dir
+C:/Code/Education/Stroustroup/Calculator/Build/CMakeFiles/edit_cache.dir
+C:/Code/Education/Stroustroup/Calculator/Build/CMakeFiles/rebuild_cache.dir
